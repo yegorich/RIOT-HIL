@@ -1,0 +1,8 @@
+APPLICATION ?= tests_$(notdir $(patsubst %/,%,$(CURDIR)))
+HILBASE ?= $(CURDIR)/../../
+RIOTBASE ?= $(HILBASE)/RIOT
+QUIET ?= 1
+# DEVELHELP enabled by default for all tests, set 0 to disable
+DEVELHELP ?= 1
+
+include $(HILBASE)/dist/robotframework/Makefile.include
