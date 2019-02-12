@@ -19,3 +19,34 @@ class PhilipAPI(LLMemMapIf):
         ret.append(self.execute_changes())
         sleep(1)
         return ret
+
+    def setup_uart(self, mode=BptUartModes.ECHO.value, baudrate=115200,
+                   parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
+                   rts=True):
+        '''Setup tester's UART.'''
+        ret = list()
+        ret.append(self.write_reg('uart.mode', int(mode))
+
+        ret.append(self.write_reg('uart.baud', int(baudrate))
+
+        # setup UART control register
+        ctrl = 0
+        if parity == serial.PARITY_EVEN:
+            ctrl = ctrl | 0x02
+        elif parity == serial.PARITY_ODD:
+            ctrl = ctrl | 0x04
+
+        if stopbits == serial.STOPBITS_TWO:
+            ctrl = ctrl | 0x01
+        # invert RTS level as it is a low active signal
+        if not rts:
+            ctrl = ctrl | 0x08
+
+        ret.append(self.write_reg('uart.ctrl', ctrl)
+
+        # reset status register
+        ret.append(self.write_reg('uart.status', 0x00)
+
+        # apply changes
+        cmd_info = self.execute_changes()
+        return cmd_info
