@@ -1,6 +1,9 @@
+import serial
+
 from riot_pal import LLMemMapIf, PHILIP_MEM_MAP_PATH
 from robot.version import get_version
 from time import sleep
+
 
 class PhilipAPI(LLMemMapIf):
 
@@ -20,14 +23,14 @@ class PhilipAPI(LLMemMapIf):
         sleep(1)
         return ret
 
-    def setup_uart(self, mode=BptUartModes.ECHO.value, baudrate=115200,
+    def setup_uart(self, mode=0, baudrate=115200,
                    parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
                    rts=True):
         '''Setup tester's UART.'''
         ret = list()
-        ret.append(self.write_reg('uart.mode', int(mode))
+        ret.append(self.write_reg('uart.mode', int(mode)))
 
-        ret.append(self.write_reg('uart.baud', int(baudrate))
+        ret.append(self.write_reg('uart.baud', int(baudrate)))
 
         # setup UART control register
         ctrl = 0
@@ -42,11 +45,12 @@ class PhilipAPI(LLMemMapIf):
         if not rts:
             ctrl = ctrl | 0x08
 
-        ret.append(self.write_reg('uart.ctrl', ctrl)
+        ret.append(self.write_reg('uart.ctrl', ctrl))
 
         # reset status register
-        ret.append(self.write_reg('uart.status', 0x00)
+        ret.append(self.write_reg('uart.status', 0x00))
 
         # apply changes
-        cmd_info = self.execute_changes()
-        return cmd_info
+        ret.append(self.execute_changes())
+        sleep(1)
+        return ret
