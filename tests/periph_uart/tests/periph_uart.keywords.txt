@@ -1,8 +1,6 @@
 *** Settings ***
 Library             UartDevice  port=%{PORT}  baudrate=%{BAUD}  timeout=${10}
 
-Resource            riot_base.keywords.txt
-Resource            riot_util.keywords.txt
 Resource            api_shell.keywords.txt
 Resource            philip.keywords.txt
 
