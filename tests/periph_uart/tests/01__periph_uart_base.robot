@@ -39,8 +39,9 @@ Extended Long Echo
 Register Access
     API Call Should Succeed     Uart Init
     PHILIP.Setup Uart           mode=2
-    API Call Should Succeed     Uart Send String      ${REG_152_READ}
-    Should Be Equal             ${RESULT['data'][0]}  ${REG_152_READ_DATA}
+    API Call Should Succeed     Uart Send String      ${REG_1_WRITE}
+    API Call Should Succeed     Uart Send String      ${REG_1_READ}
+    Should Be Equal             ${RESULT['data'][0]}  ${REG_1_READ_DATA}
 
 Should Not Access Invalid Register
     API Call Should Succeed     Uart Init
