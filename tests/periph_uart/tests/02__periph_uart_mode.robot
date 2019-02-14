@@ -13,6 +13,8 @@ Force Tags          periph  uart
 
 *** Test Cases ***
 Even Parity 8 Bits
+    ${status}   ${value}=       Run Keyword And Ignore Error   API Call Should Succeed   Uart Mode   data_bits=8   parity="N"   stop_bits=1
+    Pass Execution If           '${status}'=='FAIL'     Feature is not supported
     PHILIP.Setup Uart		parity=${UART_PARITY_EVEN}
     API Call Should Succeed     Uart Init
     API Call Should Succeed     Uart Mode             data_bits=8   parity="E"   stop_bits=1
@@ -22,6 +24,8 @@ Even Parity 8 Bits
     API Call Should Timeout     Uart Send String      ${SHORT_TEST_STRING}
 
 Odd Parity 8 Bits
+    ${status}   ${value}=       Run Keyword And Ignore Error   API Call Should Succeed   Uart Mode   data_bits=8   parity="N"   stop_bits=1
+    Pass Execution If           '${status}'=='FAIL'     Feature is not supported
     PHILIP.Setup Uart		parity=${UART_PARITY_ODD}
     API Call Should Succeed     Uart Init
     API Call Should Succeed     Uart Mode             data_bits=8   parity="O"   stop_bits=1
@@ -31,6 +35,8 @@ Odd Parity 8 Bits
     API Call Should Timeout     Uart Send String      ${SHORT_TEST_STRING}
 
 Even Parity 7 Bits
+    ${status}   ${value}=       Run Keyword And Ignore Error   API Call Should Succeed   Uart Mode   data_bits=8   parity="N"   stop_bits=1
+    Pass Execution If           '${status}'=='FAIL'     Feature is not supported
     PHILIP.Setup Uart		parity=${UART_PARITY_EVEN}   databits=${UART_DATA_BITS_7}
     API Call Should Succeed     Uart Init
     API Call Should Succeed     Uart Mode             data_bits=7   parity="E"   stop_bits=1
@@ -40,6 +46,8 @@ Even Parity 7 Bits
     API Call Should Timeout     Uart Send String      ${SHORT_TEST_STRING}
 
 Odd Parity 7 Bits
+    ${status}   ${value}=       Run Keyword And Ignore Error   API Call Should Succeed   Uart Mode   data_bits=8   parity="N"   stop_bits=1
+    Pass Execution If           '${status}'=='FAIL'     Feature is not supported
     PHILIP.Setup Uart		parity=${UART_PARITY_ODD}   databits=${UART_DATA_BITS_7}
     API Call Should Succeed     Uart Init
     API Call Should Succeed     Uart Mode             data_bits=7   parity="O"   stop_bits=1
@@ -49,6 +57,8 @@ Odd Parity 7 Bits
     API Call Should Timeout     Uart Send String      ${SHORT_TEST_STRING}
 
 Two Stop Bits
+    ${status}   ${value}=       Run Keyword And Ignore Error   API Call Should Succeed   Uart Mode   data_bits=8   parity="N"   stop_bits=1
+    Pass Execution If           '${status}'=='FAIL'     Feature is not supported
     PHILIP.Setup Uart		parity=${UART_PARITY_ODD}
     API Call Should Succeed     Uart Init
     API Call Should Succeed     Uart Mode             data_bits=8   parity="N"   stop_bits=2
