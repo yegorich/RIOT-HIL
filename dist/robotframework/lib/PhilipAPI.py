@@ -24,28 +24,36 @@ class PhilipAPI(LLMemMapIf):
         return ret
 
     def setup_uart(self, mode=0, baudrate=115200,
-                   parity=serial.PARITY_NONE, stopbits=serial.STOPBITS_ONE,
-                   rts=True):
+                   databits=serial.EIGHTBITS, parity=serial.PARITY_NONE,
+                   stopbits=serial.STOPBITS_ONE, rts=True):
         '''Setup tester's UART.'''
         ret = list()
         ret.append(self.write_reg('uart.mode', int(mode)))
 
         ret.append(self.write_reg('uart.baud', int(baudrate)))
 
-        # setup UART control register
-        ctrl = 0
-        if parity == serial.PARITY_EVEN:
-            ctrl = ctrl | 0x02
+        if databits == serial.SEVENBITS:
+            ret.append(self.write_reg('uart.ctrl.data_bits', 1))
+        elif databits == serial.EIGHTBITS:
+            ret.append(self.write_reg('uart.ctrl.data_bits', 0))
+
+        if parity == serial.PARITY_NONE:
+            ret.append(self.write_reg('uart.ctrl.parity', 0))
+        elif parity == serial.PARITY_EVEN:
+            ret.append(self.write_reg('uart.ctrl.parity', 1))
         elif parity == serial.PARITY_ODD:
-            ctrl = ctrl | 0x04
+            ret.append(self.write_reg('uart.ctrl.parity', 2))
 
-        if stopbits == serial.STOPBITS_TWO:
-            ctrl = ctrl | 0x01
+        if stopbits == serial.STOPBITS_ONE:
+            ret.append(self.write_reg('uart.ctrl.stop_bits', 0))
+        elif stopbits == serial.STOPBITS_TWO:
+            ret.append(self.write_reg('uart.ctrl.stop_bits', 1))
+
         # invert RTS level as it is a low active signal
-        if not rts:
-            ctrl = ctrl | 0x08
-
-        ret.append(self.write_reg('uart.ctrl', ctrl))
+        if rts:
+            ret.append(self.write_reg('uart.ctrl.rts', 0))
+        else:
+            ret.append(self.write_reg('uart.ctrl.rts', 1))
 
         # reset status register
         ret.append(self.write_reg('uart.status', 0x00))
